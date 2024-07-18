@@ -10,6 +10,16 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
+import TextUpdaterNode from './text-update-node';
+import './text-updater-node.css';
+
+const rfStyle = {
+    backgroundColor: '#B8CEFF',
+  };
+
+
+
+
 const initialNodes = [
     {
         id: '1',
@@ -23,7 +33,16 @@ const initialNodes = [
         position: { x: 100, y: 100 },
         data: { label: 'World' },
     },
+
+    {
+        id: 'node-1',
+        type: 'textUpdater',
+        position: { x: 0, y: 0 },
+        data: { value: 123 },
+      },
 ];
+
+const nodeTypes = { textUpdater: TextUpdaterNode };
 
 const initialEdges = [];
 
@@ -31,7 +50,7 @@ const initialEdges = [];
 function Flow(){
 
     const [nodes, setNodes] = useState(initialNodes);
-    const [edges, setEdges] = useState(initialEdges);
+    const [edges, setEdges] = useState([]);
 
 
     const onNodesChange = useCallback(
@@ -45,7 +64,7 @@ function Flow(){
     );
 
     const onConnect = useCallback(
-        (params) => setEdges((eds) => addEdge(params, eds)),
+        (connection) => setEdges((eds) => addEdge(connection, eds)),
         [],
       );
 
@@ -57,7 +76,9 @@ function Flow(){
             edges={edges}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            nodeTypes={nodeTypes}
             fitView
+            style={rfStyle}
             >
                 <Background />
                 <Controls />
